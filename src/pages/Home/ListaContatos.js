@@ -1,23 +1,45 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Avatar } from 'react-native-elements';
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { Avatar } from "react-native-elements";
+import axios from "axios";
+import { useFocusEffect } from "@react-navigation/native";
 
+export default function ListaContatos({ navigation }) {
+  const [contatos, setContatos] = useState([]);
 
-const contatos = [
-  { id: '1', nome: 'Marcos Andrade', telefone: '81 988553424' },
-  { id: '2', nome: 'Patrícia Tavares', telefone: '81 998765332' },
-  { id: '3', nome: 'Rodrigo Antunes', telefone: '81 987765525' },
-];
+  const carregarContatos = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/contatos"); // Troque o IP!
+      setContatos(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar contatos:", error);
+    }
+  };
 
-export default function ListaContatos({navigation}) {
+  // Atualiza sempre que a tela for focada
+  useFocusEffect(
+    useCallback(() => {
+      carregarContatos();
+    }, [])
+  );
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('EditarContato', { contato: item })}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate("EditarContato", { contato: item })}
+    >
       <Avatar
-              rounded
-              size="large"
-              icon={{ name: "user", type: "font-awesome" }}
-              containerStyle={styles.avatar}/>
+        rounded
+        size="medium"
+        icon={{ name: "user", type: "font-awesome" }}
+        containerStyle={styles.avatar}
+      />
       <View>
         <Text style={styles.nome}>{item.nome}</Text>
         <Text>{item.telefone}</Text>
@@ -27,44 +49,26 @@ export default function ListaContatos({navigation}) {
 
   return (
     <View style={styles.container}>
-     
-
       <FlatList
         data={contatos}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
-  },
-  header: {
-    backgroundColor: '#007bff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    alignItems: 'center',
-  },
-  headerText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  addButton: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    backgroundColor: "#f4f4f4",
   },
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   avatar: {
     width: 50,
@@ -73,13 +77,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#2ECC71",
   },
   nome: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
   },
   separator: {
     height: 2,
-    backgroundColor: '#ccc',
-
-    
+    backgroundColor: "#ccc",
   },
 });
