@@ -2,9 +2,19 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Avatar, Input, Button } from "react-native-elements";
+import { useState } from "react";
+import { signIn } from "../../Service/firebaseService"; 
 
 
 export default function Login({navigation}) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const handleLogin = async () => {
+    const logar = await signIn(email, senha);
+    alert("Usuário logado com sucesso!",logar.email);
+    navigation.navigate("ListaContatos");
+  };
+
   return (
     <View style={styles.container}>
       <Avatar
@@ -12,8 +22,8 @@ export default function Login({navigation}) {
         size="large"
         icon={{ name: "user", type: "font-awesome" }}
         containerStyle={styles.avatar}/>
-      <Input label="Email" placeholder="Digite seu email" />
-      <Input label="Senha" placeholder="Digite sua senha" secureTextEntry />
+      <Input label="Email" placeholder="Digite seu email" onChangeText={setEmail} />
+      <Input label="Senha" placeholder="Digite sua senha" secureTextEntry onChangeText={setSenha}/>
       <Button title="Logar" buttonStyle={styles.button} onPress={()=>navigation.navigate('ListaContatos')} />
       <Button title="Cadastre-se" buttonStyle={styles.button} onPress={()=>navigation.navigate('Cadastro')} />
       <TouchableOpacity>

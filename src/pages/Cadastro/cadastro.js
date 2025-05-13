@@ -3,28 +3,28 @@ import { View, StyleSheet, Alert } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import { TextInputMask } from "react-native-masked-text";
 import axios from "axios";
+import { signUp } from "../../Service/firebaseService";
 
 export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
+  // const [nome, setNome] = useState("");
+  // const [cpf, setCpf] = useState("");
 
   const handleCadastro = async () => {
-    const novoUsuario = { nome, cpf, email, senha };
-    console.log(novoUsuario);
-
-    try {
-      await axios.post("http://localhost:3000/users", novoUsuario);
-      Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
-      setNome("");
-      setCpf("");
-      setEmail("");
-      setSenha("");
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Erro", "Falha ao cadastrar usuário");
-    }
+    const novoUsuario = await signUp(email, senha);
+    alert("Usuário cadastrado com sucesso!",novoUsuario.email);
+    // try {
+    //   await axios.post("http://localhost:3000/users", novoUsuario);
+    //   Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+    //   setNome("");
+    //   setCpf("");
+    //   setEmail("");
+    //   setSenha("");
+    // } catch (error) {
+    //   console.error(error);
+    //   Alert.alert("Erro", "Falha ao cadastrar usuário");
+    // }
   };
 
   return (
@@ -33,7 +33,7 @@ export default function Cadastro() {
         Cadastro
       </Text>
 
-      <Input
+      {/* <Input
         label="Nome"
         value={nome}
         onChangeText={setNome}
@@ -46,7 +46,7 @@ export default function Cadastro() {
         onChangeText={setCpf}
         placeholder="Digite seu CPF"
         style={styles.input}
-      />
+      /> */}
       <Input
         label="Email"
         value={email}

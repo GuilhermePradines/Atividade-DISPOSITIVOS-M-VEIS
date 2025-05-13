@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "nome": "Alice",
+      "cpf": "123.456.789-00",
+      "email": "alice@email.com",
+      "senha": "senha123"
+    },
+    {
+      "id": "a0dc",
+      "nome": "guilherme",
+      "cpf": "000.000.000-00",
+      "email": "minecraft@gmail.com",
+      "senha": "12345678"
+    }
+  ],
+  "contatos": []
+}
