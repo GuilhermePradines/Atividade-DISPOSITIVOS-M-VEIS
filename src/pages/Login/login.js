@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text,Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Avatar, Input, Button } from "react-native-elements";
 import { useState } from "react";
@@ -10,10 +10,14 @@ export default function Login({navigation}) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const handleLogin = async () => {
-    const logar = await signIn(email, senha);
-    alert("Usuário logado com sucesso!",logar.email);
-    navigation.navigate("ListaContatos");
+    try {
+      const logar = await signIn(email, senha);
+      Alert.alert("Login realizado", `Bem-vindo(a), ${logar.email}`);
+    } catch (error) {
+      Alert.alert("Erro ao logar", error.message);
+    }
   };
+
 
   return (
     <View style={styles.container}>
@@ -24,7 +28,7 @@ export default function Login({navigation}) {
         containerStyle={styles.avatar}/>
       <Input label="Email" placeholder="Digite seu email" onChangeText={setEmail} />
       <Input label="Senha" placeholder="Digite sua senha" secureTextEntry onChangeText={setSenha}/>
-      <Button title="Logar" buttonStyle={styles.button} onPress={()=>navigation.navigate('ListaContatos')} />
+      <Button title="Logar" buttonStyle={styles.button} onPress={handleLogin} />
       <Button title="Cadastre-se" buttonStyle={styles.button} onPress={()=>navigation.navigate('Cadastro')} />
       <TouchableOpacity>
         <Text style={styles.forgotPassword}>esqueceu a senha</Text>

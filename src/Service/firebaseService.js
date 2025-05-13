@@ -25,6 +25,7 @@ export const signIn = async (email, password)=> {
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
+            navigatory.navigate('Home');
             return user;
         })
         .catch((error) => {
