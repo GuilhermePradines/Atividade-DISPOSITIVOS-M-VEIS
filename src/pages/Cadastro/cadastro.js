@@ -13,7 +13,7 @@ export default function Cadastro() {
 
   const handleCadastro = async () => {
     const novoUsuario = await signUp(email, senha);
-    alert("Usuário cadastrado com sucesso!",novoUsuario.email);
+    alert("Usuário cadastrado com sucesso!");
     // try {
     //   await axios.post("http://localhost:3000/users", novoUsuario);
     //   Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");

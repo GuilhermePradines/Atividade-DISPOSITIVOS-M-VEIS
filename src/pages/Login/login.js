@@ -6,18 +6,23 @@ import { useState } from "react";
 import { signIn } from "../../Service/firebaseService"; 
 
 
+
 export default function Login({navigation}) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const handleLogin = async () => {
     try {
       const logar = await signIn(email, senha);
+
+      if (logar && logar.email) {
       Alert.alert("Login realizado", `Bem-vindo(a), ${logar.email}`);
+      console.log("navegando ...")
+      navigation.navigate('ListaContatos');
+    }
     } catch (error) {
       Alert.alert("Erro ao logar", error.message);
     }
   };
-
 
   return (
     <View style={styles.container}>
